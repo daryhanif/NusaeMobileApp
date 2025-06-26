@@ -16,7 +16,13 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "navigationBar": {
+        "visible": "leanback",
+        "backgroundColor": "#000000",
+        "barStyle": "light-content",
+        "barBackgroundColor": "#ffffff",
+        "edgeToEdgeEnabled": false
+      }
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +38,13 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
         }
       ]
     ],

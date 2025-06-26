@@ -1,7 +1,13 @@
 import Feather from "@expo/vector-icons/Feather";
 import React, { useState } from "react";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
-export default function PasswordInputComponent() {
+import {
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+} from "react-native";
+export default function PasswordInputComponent(props: TextInputProps) {
   const [togglePassword, setTogglePassword] = useState<boolean>(true);
   const [focusInput, setFocusInput] = useState<boolean>(false);
 
@@ -11,6 +17,7 @@ export default function PasswordInputComponent() {
     >
       <Feather name="lock" size={24} color="black" style={styles.icon} />
       <TextInput
+        {...props}
         style={styles.input}
         secureTextEntry={togglePassword}
         onFocus={() => {

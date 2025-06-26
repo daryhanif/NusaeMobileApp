@@ -1,5 +1,7 @@
-import DEFAULT_COLOR from "@/app/const/color";
+import { DEFAULT_COLOR } from "@/app/const/color";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -8,15 +10,39 @@ import {
   Text,
   View,
 } from "react-native";
-
-import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import InputWithIcon from "../components/InputComponent";
 import PasswordInputComponent from "../components/PasswordInputComponent";
+import useLogin from "../hooks/useLogin";
+import { AuthStore } from "../stores/Auth-Stores";
+
 const LoginPage = () => {
   const { width, height } = Dimensions.get("window");
+  const router = useRouter();
+  const { loading, error, Login, data } = useLogin();
+  const setIsLogin = AuthStore((state) => state.setIsLogin);
+  const [username, setUsername] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const handleLogin = async () => {
+    console.log("Login clicked:", { username, password });
+    if (!username || !password) {
+      alert("Username dan Password wajib diisi!");
+      return;
+    }
+    await Login({ username, password });
+  };
+  useEffect(() => {
+    if (data) {
+      console.log(
+        "data dalam useEffect:" + JSON.stringify(data, null, 2).toString()
+      );
 
+      setIsLogin(true);
+      router.replace("/(tabs)/dashboards/dashboard"); // ✅ langsung panggil
+    }
+  }, [data, router]);
   const safeAreaInsets = useSafeAreaInsets();
+
   const styleLoginPage = StyleSheet.create({
     mainContainer: {
       paddingTop: safeAreaInsets.top,
@@ -66,6 +92,8 @@ const LoginPage = () => {
       padding: 10,
       borderRadius: 5,
       color: DEFAULT_COLOR.background,
+      justifyContent: "center",
+      textAlign: "center",
     },
     title: {
       fontSize: 40,
@@ -91,16 +119,31 @@ const LoginPage = () => {
           </View>
           <View>
             <View>
-              <InputWithIcon />
+              <InputWithIcon
+                onChange={(e) => {
+                  setUsername(e.nativeEvent.text);
+                }}
+                editable={!loading}
+              />
             </View>
             <View>
-              <PasswordInputComponent />
+              <PasswordInputComponent
+                onChange={(e) => setPassword(e.nativeEvent.text)}
+                editable={!loading}
+              />
             </View>
 
             <View>
-              <Pressable disabled={false} style={styleLoginPage.LoginButton}>
-                <Text style={styleLoginPage.LoginButton}>Login</Text>
-                <ActivityIndicator></ActivityIndicator>
+              <Pressable
+                style={styleLoginPage.LoginButton}
+                onPress={handleLogin}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color={"#fff"}></ActivityIndicator>
+                ) : (
+                  <Text style={{ color: "#fff" }}>Login</Text>
+                )}
               </Pressable>
             </View>
           </View>
