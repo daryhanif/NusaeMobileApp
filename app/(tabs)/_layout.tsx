@@ -8,8 +8,9 @@ import {
 import { Tabs } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { DEFAULT_COLOR } from "../const/color";
-export default function MainAppLayout() {
+import { DEFAULT_COLOR } from "../../const/color";
+
+export default function TabsLayout() {
   const MainPage = [
     {
       name: "dashboards/dashboard",

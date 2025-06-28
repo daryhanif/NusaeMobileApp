@@ -1,15 +1,19 @@
+import RootContainer from "@/components/rootContainer";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function dashboard() {
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <RootContainer>
       <View style={style.WellcomeContainer}>
         <Text style={style.WellcomeContainerText}>
           Selamat Datang, USER AWOWOWOWOWOWK JOWKOWI
         </Text>
       </View>
-    </ScrollView>
+      <View style={{ flex: 1 }}>
+        <Text>Dashboard</Text>
+      </View>
+    </RootContainer>
   );
 }
 const style = StyleSheet.create({
@@ -24,5 +28,6 @@ const style = StyleSheet.create({
   },
   WellcomeContainerText: {
     fontSize: 20,
+    fontFamily: "NunitoBold",
   },
 });

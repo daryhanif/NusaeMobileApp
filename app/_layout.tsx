@@ -1,11 +1,25 @@
 import { Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
-import { Image, Platform, StyleSheet, Text, View } from "react-native";
-import { DEFAULT_COLOR } from "./const/color";
-import { AuthStore } from "./stores/Auth-Stores";
-
+import {
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { DEFAULT_COLOR } from "@/const/color";
+import { AuthStore } from "@/stores/Auth-Stores";
+import { useFonts } from "expo-font";
+import { FONT_DEFAULT } from "@/const/fonts";
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    NunitoRegular: require("@/assets/fonts/nunito/static/Nunito-Regular.ttf"),
+    NunitoBold: require("@/assets/fonts/nunito/static/Nunito-Bold.ttf"),
+    NunitoSemiBold: require("@/assets/fonts/nunito/static/Nunito-SemiBold.ttf"),
+    NunitoExtraBold: require("@/assets/fonts/nunito/static/Nunito-ExtraBold.ttf"),
+  });
   // ambil nilai state dan method dari store
   const isLogin = AuthStore((state) => state.isLogin);
   const setIsLogin = AuthStore((state) => state.setIsLogin);
@@ -26,8 +40,8 @@ export default function RootLayout() {
       }
     }
     getData();
-  }, []);
-
+  }, [setIsLogin]);
+  if (!fontsLoaded) return null; // ✅ now safe
   const styleLoginPage = StyleSheet.create({
     logoContainer: {
       justifyContent: "flex-start",
@@ -46,12 +60,7 @@ export default function RootLayout() {
       flexDirection: "column",
       gap: 10,
     },
-    logoText: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: DEFAULT_COLOR.text,
-      marginVertical: 20,
-    },
+
     logo: {
       width: 50,
       height: 50,
@@ -78,16 +87,41 @@ export default function RootLayout() {
           name="(tabs)"
           options={{
             headerShown: true,
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: "#1E1E1E",
+            },
+            headerTitleStyle: {
+              fontFamily: "Poppins-Bold",
+              fontSize: 20,
+              color: "white",
+            },
             headerLeft: () => (
               <View style={styleLoginPage.logoContainer}>
                 <Image
-                  source={require("./assets/images/logo_kopi.png")}
+                  source={require("@/assets/images/logo_kopi.png")}
                   style={styleLoginPage.logo}
                 />
 
-                <Text style={styleLoginPage.logoText}>Kopi Nusae </Text>
+                <Text style={FONT_DEFAULT["extra-bold-nunito"]}>
+                  Kopi Nusae{" "}
+                </Text>
               </View>
             ),
+            headerRight: () => {
+              if (isLogin) {
+                return (
+                  <Pressable style={styleLoginPage.LoginButton}>
+                    <Text
+                      style={[FONT_DEFAULT["bold-nunito"], { color: "white" }]}
+                    >
+                      Logout
+                    </Text>
+                  </Pressable>
+                );
+              }
+              return null; // kalau tidak login, tidak tampil apa-apa
+            },
           }}
         />
       </Stack.Protected>

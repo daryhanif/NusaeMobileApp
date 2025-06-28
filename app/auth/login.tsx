@@ -1,4 +1,4 @@
-import { DEFAULT_COLOR } from "@/app/const/color";
+import { DEFAULT_COLOR } from "@/const/color";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
@@ -11,10 +11,10 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import InputWithIcon from "../components/InputComponent";
-import PasswordInputComponent from "../components/PasswordInputComponent";
-import useLogin from "../hooks/useLogin";
-import { AuthStore } from "../stores/Auth-Stores";
+import InputWithIcon from "@/components/InputComponent";
+import PasswordInputComponent from "@/components/PasswordInputComponent";
+import useLogin from "@/hooks/useLogin";
+import { AuthStore } from "@/stores/Auth-Stores";
 
 const LoginPage = () => {
   const { width, height } = Dimensions.get("window");
@@ -82,6 +82,7 @@ const LoginPage = () => {
       fontWeight: "bold",
       color: DEFAULT_COLOR.text,
       marginVertical: 20,
+      fontFamily: "Poppins-Regular",
     },
     logo: {
       width: 50,
@@ -107,7 +108,7 @@ const LoginPage = () => {
       <View style={styleLoginPage.container}>
         <View style={styleLoginPage.logoContainer}>
           <Image
-            source={require("../assets/images/logo_kopi.png")}
+            source={require("@/assets/images/logo_kopi.png")}
             style={styleLoginPage.logo}
           />
           <Text style={styleLoginPage.logoText}>Kopi Nusae </Text>
